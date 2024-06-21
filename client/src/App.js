@@ -1,6 +1,6 @@
 /* Import react library */
 import { BrowserRouter, Routes, Route} from 'react-router-dom';
-import HelloWorld from './scenes/HelloWorld';
+import LoginPage from './components/LoginPage';
 
 function App() {
   return (
@@ -8,7 +8,7 @@ function App() {
       <BrowserRouter>
           <Routes>
             {/* Route to Login Page */}
-            <Route path='/' element={<HelloWorld />} />
+            <Route path='/' element={<LoginPage />} />
           </Routes>
         </BrowserRouter>
     </div>
