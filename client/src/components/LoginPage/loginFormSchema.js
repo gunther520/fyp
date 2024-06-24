@@ -1,3 +1,3 @@
-import { loginFormSchema } from "../../utils/schema/globalSchema"
+import { loginFormSchema } from "../../utils/validationSchema/globalSchema"
 
 export default loginFormSchema
