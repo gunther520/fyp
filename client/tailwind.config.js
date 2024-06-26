@@ -23,9 +23,12 @@ module.exports = {
       },
       'gray':{
         'light':'#f7f7f7',
+        'default': '#9ca3af',
+        'heavy': '#4b5563'
       },
       'blue': {
-        'light': '#93c5fd'
+        'light': '#93c5fd',
+        'url': '#60a5fa'
       },
     },
     extend: {
