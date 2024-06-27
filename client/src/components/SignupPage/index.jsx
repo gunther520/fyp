@@ -1,15 +1,16 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 import { Formik, Form, ErrorMessage } from "formik";
-import { Link } from "react-router-dom";
-import loginFormSchema from "./loginFormSchema";
+import { ChevronLeftIcon } from "@heroicons/react/24/outline";
+import signupFormSchema from "./signupFormSchema";
 import CustomInputField from "../base/InputFiled/CustomInputField";
 import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
-import FontAwesomeIcons from "../base/Icons/FontAwesomeIcons";
 
-const LoginPage = () => {
+const SignupPage = () => {
+  const navigate = useNavigate();
   const handleSubmit = (data, { setSubmitting }) => {
-    console.log("Login Submitted", data);
+    console.log("Signup Form Submitted", data);
     setSubmitting(false);
     // Here you would usually submit the form values to the backend
   };
@@ -18,14 +19,19 @@ const LoginPage = () => {
     <div className="bg-gray-light">
       <div className="flex items-center justify-center min-h-screen">
         <Formik
-          initialValues={{ email: "", password: "" }}
-          validationSchema={loginFormSchema}
+          initialValues={{ email: "", password: "", confirmedPassword: "" }}
+          validationSchema={signupFormSchema}
           onSubmit={handleSubmit}
         >
           {({ errors, isSubmitting, touched }) => (
             <Form className="w-4/5 md:w-2/3 lg:w-2/5 bg-gray-100 p-8 rounded shadow-lg space-y-5">
+              <ChevronLeftIcon
+                onClick={() => navigate(`${WEB_ROUTE_PATHS.home}`)}
+                className="size-7 opacity-50 hover:opacity-100 hover:cursor-pointer"
+              />
+
               <div className="w-full text-center">
-                <span className="text-2xl font-bold">Login</span>
+                <span className="text-2xl font-bold">New User</span>
               </div>
 
               <div>
@@ -75,47 +81,39 @@ const LoginPage = () => {
                 />
               </div>
 
-              <div className="flex flex-col item-center justify-center gap-2">
-                <div className="flex justify-end">
-                  <Link
-                    to="/signup"
-                    className="text-xs font-semibold text-blue-url hover:underline"
-                  >
-                    Forgot Password?
-                  </Link>
-                </div>
-
-                <div className="flex justify-center gap-2">
-                  <span className="text-sm font-semibold">
-                    Do not have an account?
-                  </span>
-                  <Link
-                    to={`${WEB_ROUTE_PATHS.signUp}`}
-                    className="text-sm font-semibold text-blue-url hover:underline"
-                  >
-                    Sign up
-                  </Link>
-                </div>
-
-                <div className="flex w-full items-center gap-2">
-                  <div className="w-1/2 border border-gray-default"></div>
-                  <p className="text-gray-heavy text-sm font-semibold">Or</p>
-                  <div className="w-1/2 border border-gray-default"></div>
-                </div>
-
-                <div className="flex flex-row w-full justify-center gap-10">
-                  <FontAwesomeIcons icon="instagram" style="text-3xl" />
-                  <FontAwesomeIcons icon="facebook" style="text-3xl" />
-                  <FontAwesomeIcons icon="google" style="text-3xl" />
-                </div>
+              <div>
+                <label
+                  htmlFor="confirmedPassword"
+                  className="block text-sm font-semibold"
+                >
+                  Confirmed Password:
+                </label>
+                <CustomInputField
+                  type="password"
+                  name="confirmedPassword"
+                  id="confirmedPassword"
+                  placeholder="Enter Confirmed Password"
+                  style={`${
+                    errors.confirmedPassword && touched.confirmedPassword
+                      ? "error"
+                      : "no-error"
+                  }`}
+                  isError={errors.confirmedPassword ? true : false}
+                  isTouched={touched.confirmedPassword}
+                />
+                <ErrorMessage
+                  name="confirmedPassword"
+                  component="div"
+                  className="text-warning-red-heavy text-sm font-semibold my-1"
+                />
               </div>
 
               <CustomButton
                 type="submit"
                 disabled={isSubmitting}
-                style={isSubmitting ? "disabled-wide-btn" : "wide-btn"}
+                style="wide-btn"
                 varient="login-submit-btn"
-                text="Login"
+                text="Sign Up"
               />
             </Form>
           )}
@@ -125,4 +123,4 @@ const LoginPage = () => {
   );
 };
 
-export default LoginPage;
+export default SignupPage;
