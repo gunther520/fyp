@@ -20,7 +20,7 @@ const SignupPage = () => {
     },
     onError: (err) => {
       // toast
-      console.log(err)
+
     },
   });
 

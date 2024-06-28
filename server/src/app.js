@@ -2,7 +2,7 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
-import config from "./config.js";
+import Env from "./utils/constants/Env.js";
 import userRoute from "./routes/users/index.js";
 import dotenv from "dotenv";
 
@@ -19,11 +19,11 @@ app.use("/users", userRoute);
 
 // MongoDB database configuration
 mongoose
-  .connect(config.MongoDB_URL)
+  .connect(Env.MongoDB_URL)
   .then(async () => {
-    app.listen(process.env.PORT, (result) => {
+    app.listen(Env.PORT, (result) => {
       console.log(
-        `Successfully connect to Database with Server Port ${process.env.PORT}`
+        `Successfully connect to Database with Server Port ${Env.PORT}`
       );
     });
   })

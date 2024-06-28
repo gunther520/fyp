@@ -1,5 +1,5 @@
 import { User } from "../../../models/index.js"
-import bcrypt from "bcrypt";
+import { hashPassword } from "../../../config/bcrypt.js";
 
 const signupUser = async (req, res) => {
   try {
@@ -12,24 +12,21 @@ const signupUser = async (req, res) => {
         message: "User is already exists" 
       });
     }
-    const salt = await bcrypt.genSalt();
-    const encryptedPassword = await bcrypt.hash(password, salt);
 
     const newUser = new User({
       email: email,
-      password: encryptedPassword,
+      password: hashPassword(password),
     });
     await newUser.save();
 
     res.status(201).json({
       status: 201,
-      message: "User registered successfully!",
       data: { email: email, password: password },
     });
   } catch (err) {
     res.status(500).json({
       status: 500,
-      message: "Failed to register user (Internal Server Error)",
+      message: "Internal Server Error",
     });
   }
 };

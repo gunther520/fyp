@@ -1,17 +1,38 @@
 import React from "react";
 import { Formik, Form, ErrorMessage } from "formik";
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { useMutation } from "react-query";
 import userLoginSchema from "./schema";
 import CustomInputField from "../base/InputFiled/CustomInputField";
 import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
 import FontAwesomeIcons from "../base/Icons/FontAwesomeIcons";
+import login from "../../services/users/login";
 
 const LoginPage = () => {
-  const handleSubmit = (data, { setSubmitting }) => {
+  const navigate = useNavigate();
+
+  const { mutateAsync: loginUser } = useMutation({
+    mutationFn: login,
+    onSuccess: (data) => {
+      console.log("Login successful:", data);
+      navigate(`${WEB_ROUTE_PATHS.home}`);
+    },
+    onError: (err) => {
+      // toast
+
+    },
+  });
+  
+  const handleSubmit = async (data, { setSubmitting }) => {
     console.log("Login Submitted", data);
-    setSubmitting(false);
-    // Here you would usually submit the form values to the backend
+    setSubmitting(true);
+    try{
+      await loginUser(data);
+      setSubmitting(false);
+    } catch (err) {
+      setSubmitting(false);
+    }
   };
 
   return (
