@@ -1,14 +1,16 @@
-import User from "../../../models/users/User.js";
+import { User } from "../../../models/index.js"
 import bcrypt from "bcrypt";
 
 const signupUser = async (req, res) => {
   try {
     const { email, password } = req.body;
+    
     const existingUser = await User.findOne(email ? { email: email } : null);
     if (existingUser) {
-      return res
-        .status(400)
-        .json({ status: 400, message: "Email is already exists" });
+      return res.status(400).json({ 
+        status: 400, 
+        message: "User is already exists" 
+      });
     }
     const salt = await bcrypt.genSalt();
     const encryptedPassword = await bcrypt.hash(password, salt);
@@ -19,13 +21,11 @@ const signupUser = async (req, res) => {
     });
     await newUser.save();
 
-    res
-      .status(201)
-      .json({
-        status: 201,
-        message: "User registered successfully!",
-        data: { email: email, password: password },
-      });
+    res.status(201).json({
+      status: 201,
+      message: "User registered successfully!",
+      data: { email: email, password: password },
+    });
   } catch (err) {
     res.status(500).json({
       status: 500,

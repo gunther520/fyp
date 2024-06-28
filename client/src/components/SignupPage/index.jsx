@@ -12,21 +12,28 @@ import signup from "../../services/users/signup";
 const SignupPage = () => {
   const navigate = useNavigate();
 
-  // const { mutateAsync: signUpUser } = useMutation({
-  //   mutationFn: signup,
-  //   onSuccess: (data) => {
-  //     console.log("Signup successful:", data);
-  //     navigate(`${WEB_ROUTE_PATHS.login}`);
-  //   },
-  //   onError: (err) => {
-  //     console.error(err);
-  //   },
-  // });
+  const { mutateAsync: signUpUser } = useMutation({
+    mutationFn: signup,
+    onSuccess: (data) => {
+      console.log("Signup successful:", data);
+      navigate(`${WEB_ROUTE_PATHS.login}`);
+    },
+    onError: (err) => {
+      // toast
+      console.log(err)
+    },
+  });
 
   const handleSubmit = async (data, { setSubmitting }) => {
     console.log("Sign Up Submitted ", data);
-    setSubmitting(false);
-    // await signUpUser(data);
+    setSubmitting(true);
+    try {
+      await signUpUser(data);
+      setSubmitting(false);
+
+    } catch (err) {
+      setSubmitting(false);
+    }
   };
 
   return (
@@ -60,8 +67,6 @@ const SignupPage = () => {
                   style={`${
                     errors.email && touched.email ? "error" : "no-error"
                   }`}
-                  isError={errors.email ? true : false}
-                  isTouched={touched.email}
                 />
                 <ErrorMessage
                   name="email"
@@ -85,8 +90,6 @@ const SignupPage = () => {
                   style={`${
                     errors.password && touched.password ? "error" : "no-error"
                   }`}
-                  isError={errors.password ? true : false}
-                  isTouched={touched.password}
                 />
                 <ErrorMessage
                   name="password"
@@ -112,8 +115,6 @@ const SignupPage = () => {
                       ? "error"
                       : "no-error"
                   }`}
-                  isError={errors.confirmedPassword ? true : false}
-                  isTouched={touched.confirmedPassword}
                 />
                 <ErrorMessage
                   name="confirmedPassword"

@@ -1,12 +1,12 @@
 import * as Yup from "yup";
 
 const emailRule = Yup.string()
-  .email("Invalid Email Format")
-  .required("Email is required");
+  .required("Email is required")
+  .email("Invalid Email Format");
 
 const passwordRule = Yup.string()
-  .min(8, "Password must be at least 8 characters long")
-  .required("Password is required");
+  .required("Password is required")
+  .min(8, "Password must be at least 8 characters long");
 
 const confirmedPasswordRule = Yup.string()
   .required("Confirmed Password is required")

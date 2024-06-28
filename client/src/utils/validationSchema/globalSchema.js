@@ -7,7 +7,7 @@ const userLoginSchema = Yup.object({
 });
 
 const userSignUpSchema = Yup.object({
-  emailRule: emailRule,
+  email: emailRule,
   password: passwordRule,
   confirmedPassword: confirmedPasswordRule,
 });

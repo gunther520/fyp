@@ -40,8 +40,6 @@ const LoginPage = () => {
                   style={`${
                     errors.email && touched.email ? "error" : "no-error"
                   }`}
-                  isError={errors.email ? true : false}
-                  isTouched={touched.email}
                 />
                 <ErrorMessage
                   name="email"
@@ -65,8 +63,6 @@ const LoginPage = () => {
                   style={`${
                     errors.password && touched.password ? "error" : "no-error"
                   }`}
-                  isError={errors.password ? true : false}
-                  isTouched={touched.password}
                 />
                 <ErrorMessage
                   name="password"

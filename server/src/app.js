@@ -15,7 +15,7 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Server Routes
-// app.use("/user", userRoute);
+app.use("/users", userRoute);
 
 // MongoDB database configuration
 mongoose
