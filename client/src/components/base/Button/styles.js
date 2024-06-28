@@ -8,4 +8,5 @@ export const styles = {
 
 export const varients = {
   "login-submit-btn": `px-4 py-2 mx-auto rounded-lg border-2 hover:bg-transparent hover:text-black hover:border-dashed`,
+  "sign-up-submit-btn": `px-4 py-2 mx-auto rounded-lg border-2 hover:bg-transparent hover:text-black hover:border-dashed`,
 };

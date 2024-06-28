@@ -2,6 +2,7 @@ import React from "react";
 import { styles, varients } from './styles';
 
 const CustomButton = ({ type, disabled, style, varient, text, }) => {
+  console.log("hi");
   return (
     <button 
       type={type} 

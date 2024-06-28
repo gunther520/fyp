@@ -34,6 +34,7 @@ const CustomInputField = ({
           <button
             onClick={togglePasswordVisibility}
             className="p-2 focus:outline-none"
+            type="button"
           >
             {showPassword ? (
               <EyeSlashIcon className="size-5 text-black cursor-pointer" />

@@ -12,21 +12,21 @@ import signup from "../../services/users/signup";
 const SignupPage = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: signUpUser } = useMutation({
-    mutationFn: signup,
-    onSuccess: (data) => {
-      console.log("Signup successful:", data);
-      navigate(`${WEB_ROUTE_PATHS.login}`);
-    },
-    onError: (err) => {
-      console.error(err);
-    },
-  });
+  // const { mutateAsync: signUpUser } = useMutation({
+  //   mutationFn: signup,
+  //   onSuccess: (data) => {
+  //     console.log("Signup successful:", data);
+  //     navigate(`${WEB_ROUTE_PATHS.login}`);
+  //   },
+  //   onError: (err) => {
+  //     console.error(err);
+  //   },
+  // });
 
   const handleSubmit = async (data, { setSubmitting }) => {
-    setSubmitting(true);
-    console.log(data);
-    await signUpUser(data);
+    console.log("Sign Up Submitted ", data);
+    setSubmitting(false);
+    // await signUpUser(data);
   };
 
   return (
@@ -40,7 +40,7 @@ const SignupPage = () => {
           {({ errors, isSubmitting, touched }) => (
             <Form className="w-4/5 md:w-2/3 lg:w-2/5 bg-gray-100 p-8 rounded shadow-lg space-y-5">
               <ChevronLeftIcon
-                onClick={() => navigate(`${WEB_ROUTE_PATHS.home}`)}
+                onClick={() => navigate(`${WEB_ROUTE_PATHS.login}`)}
                 className="size-7 opacity-50 hover:opacity-100 hover:cursor-pointer"
               />
 
@@ -125,8 +125,8 @@ const SignupPage = () => {
               <CustomButton
                 type="submit"
                 disabled={isSubmitting}
-                style="wide-btn"
-                varient="login-submit-btn"
+                style={isSubmitting ? "disabled-wide-btn" : "wide-btn"}
+                varient="sign-up-submit-btn"
                 text="Sign Up"
               />
             </Form>

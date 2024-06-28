@@ -2,8 +2,11 @@ import express from "express";
 import bodyParser from "body-parser";
 import mongoose from "mongoose";
 import cors from "cors";
-import config from "./config";
-import userRoute from "./routes/users/index"
+import config from "./config.js";
+import userRoute from "./routes/users/index.js";
+import dotenv from "dotenv";
+
+dotenv.config();
 
 const app = express();
 
@@ -12,15 +15,15 @@ app.use(bodyParser.json());
 app.use(cors());
 
 // Server Routes
-app.use("/user", userRoute);
+// app.use("/user", userRoute);
 
 // MongoDB database configuration
 mongoose
   .connect(config.MongoDB_URL)
   .then(async () => {
-    app.listen(config.PORT, (result) => {
+    app.listen(process.env.PORT, (result) => {
       console.log(
-        `Successfully connect to Database with Server Port ${config.PORT}`
+        `Successfully connect to Database with Server Port ${process.env.PORT}`
       );
     });
   })

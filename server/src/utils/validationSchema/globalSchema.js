@@ -6,7 +6,7 @@ import {
   userConfirmedPasswordRule,
   adminEmailRule,
   adminPasswordRule,
-} from "./schemaRules";
+} from "./schemaRules.js";
 
 const userLoginSchema = Yup.object().shape({
   email: userEmailRule,
