@@ -1,7 +1,7 @@
 import React from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import { Link } from "react-router-dom";
-import loginFormSchema from "./loginFormSchema";
+import userLoginSchema from "./schema";
 import CustomInputField from "../base/InputFiled/CustomInputField";
 import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
@@ -19,7 +19,7 @@ const LoginPage = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Formik
           initialValues={{ email: "", password: "" }}
-          validationSchema={loginFormSchema}
+          validationSchema={userLoginSchema}
           onSubmit={handleSubmit}
         >
           {({ errors, isSubmitting, touched }) => (
@@ -90,7 +90,7 @@ const LoginPage = () => {
                     Do not have an account?
                   </span>
                   <Link
-                    to={`${WEB_ROUTE_PATHS.signUp}`}
+                    to={`${WEB_ROUTE_PATHS.signup}`}
                     className="text-sm font-semibold text-blue-url hover:underline"
                   >
                     Sign up

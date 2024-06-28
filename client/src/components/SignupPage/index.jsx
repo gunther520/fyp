@@ -2,17 +2,31 @@ import React from "react";
 import { useNavigate } from "react-router-dom";
 import { Formik, Form, ErrorMessage } from "formik";
 import { ChevronLeftIcon } from "@heroicons/react/24/outline";
-import signupFormSchema from "./signupFormSchema";
+import userSignUpSchema from "./schema";
 import CustomInputField from "../base/InputFiled/CustomInputField";
 import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
+import { useMutation } from "react-query";
+import signup from "../../services/users/signup";
 
 const SignupPage = () => {
   const navigate = useNavigate();
-  const handleSubmit = (data, { setSubmitting }) => {
-    console.log("Signup Form Submitted", data);
-    setSubmitting(false);
-    // Here you would usually submit the form values to the backend
+
+  const { mutateAsync: signUpUser } = useMutation({
+    mutationFn: signup,
+    onSuccess: (data) => {
+      console.log("Signup successful:", data);
+      navigate(`${WEB_ROUTE_PATHS.login}`);
+    },
+    onError: (err) => {
+      console.error(err);
+    },
+  });
+
+  const handleSubmit = async (data, { setSubmitting }) => {
+    setSubmitting(true);
+    console.log(data);
+    await signUpUser(data);
   };
 
   return (
@@ -20,7 +34,7 @@ const SignupPage = () => {
       <div className="flex items-center justify-center min-h-screen">
         <Formik
           initialValues={{ email: "", password: "", confirmedPassword: "" }}
-          validationSchema={signupFormSchema}
+          validationSchema={userSignUpSchema}
           onSubmit={handleSubmit}
         >
           {({ errors, isSubmitting, touched }) => (

@@ -1,15 +1,15 @@
 import * as Yup from "yup";
 import { emailRule, passwordRule, confirmedPasswordRule } from "./schemaRules";
 
-const loginFormSchema = Yup.object({
+const userLoginSchema = Yup.object({
   email: emailRule,
   password: passwordRule,
 });
 
-const signupFormSchema = Yup.object({
+const userSignUpSchema = Yup.object({
   emailRule: emailRule,
   password: passwordRule,
   confirmedPassword: confirmedPasswordRule,
 });
 
-export { loginFormSchema, signupFormSchema };
+export { userLoginSchema, userSignUpSchema };

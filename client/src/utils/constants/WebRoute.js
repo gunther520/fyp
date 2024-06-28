@@ -1,6 +1,6 @@
 const WEB_ROUTE_PATHS = {
-  home: "/",
-  signUp: "/signup",
+  login: "/",
+  signup: "/signup",
 };
 
 export default WEB_ROUTE_PATHS;
