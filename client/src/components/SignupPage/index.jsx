@@ -7,7 +7,12 @@ import CustomInputField from "../base/InputFiled/CustomInputField";
 import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
 import { useMutation } from "react-query";
+import axios from "axios";
 import signup from "../../services/users/signup";
+import {
+  displaySuccessToast,
+  displayErrorToast,
+} from "../base/Toast/CustomToast";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -16,21 +21,28 @@ const SignupPage = () => {
     mutationFn: signup,
     onSuccess: (data) => {
       console.log("Signup successful:", data);
+      displaySuccessToast("Signup Success!");
       navigate(`${WEB_ROUTE_PATHS.login}`);
     },
     onError: (err) => {
-      // toast
-
+      if (axios.isAxiosError(err)) {
+        displayErrorToast(
+          `${
+            err.response?.data?.message
+              ? err.response?.data?.message
+              : "Unexpected Error"
+          }`
+        );
+        return;
+      }
     },
   });
 
   const handleSubmit = async (data, { setSubmitting }) => {
-    console.log("Sign Up Submitted ", data);
     setSubmitting(true);
     try {
       await signUpUser(data);
       setSubmitting(false);
-
     } catch (err) {
       setSubmitting(false);
     }
@@ -129,6 +141,9 @@ const SignupPage = () => {
                 style={isSubmitting ? "disabled-wide-btn" : "wide-btn"}
                 varient="sign-up-submit-btn"
                 text="Sign Up"
+                loading={isSubmitting}
+                spinner={true}
+                spinnerSize="4"
               />
             </Form>
           )}

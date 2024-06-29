@@ -1,37 +1,55 @@
-import React from "react";
+import React, { useState } from "react";
 import { Formik, Form, ErrorMessage } from "formik";
 import { Link, useNavigate } from "react-router-dom";
 import { useMutation } from "react-query";
+import axios from "axios";
 import userLoginSchema from "./schema";
 import CustomInputField from "../base/InputFiled/CustomInputField";
 import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
 import FontAwesomeIcons from "../base/Icons/FontAwesomeIcons";
 import login from "../../services/users/login";
+import {
+  displaySuccessToast,
+  displayErrorToast,
+} from "../base/Toast/CustomToast";
 
 const LoginPage = () => {
   const navigate = useNavigate();
+  const [isLoading, setIsLoading] = useState(false);
 
   const { mutateAsync: loginUser } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
       console.log("Login successful:", data);
+      displaySuccessToast("Login Success!");
       navigate(`${WEB_ROUTE_PATHS.home}`);
     },
     onError: (err) => {
       // toast
-
+      if (axios.isAxiosError(err)) {
+        displayErrorToast(
+          `${
+            err.response?.data?.message
+              ? err.response?.data?.message
+              : "Unexpected Error"
+          }`
+        );
+        return;
+      }
     },
   });
-  
+
   const handleSubmit = async (data, { setSubmitting }) => {
-    console.log("Login Submitted", data);
     setSubmitting(true);
-    try{
+    setIsLoading(true);
+    try {
       await loginUser(data);
       setSubmitting(false);
+      setIsLoading(false);
     } catch (err) {
       setSubmitting(false);
+      setIsLoading(false);
     }
   };
 
@@ -133,6 +151,9 @@ const LoginPage = () => {
                 style={isSubmitting ? "disabled-wide-btn" : "wide-btn"}
                 varient="login-submit-btn"
                 text="Login"
+                loading={isSubmitting}
+                spinner={true}
+                spinnerSize="4"
               />
             </Form>
           )}

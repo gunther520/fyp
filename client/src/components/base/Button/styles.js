@@ -3,7 +3,7 @@ const defaultStyle = `block bg-black text-white font-semibold`;
 export const styles = {
   default: `${defaultStyle}`,
   "wide-btn": `${defaultStyle} w-full`,
-  "disabled-wide-btn": `${defaultStyle} w-full opacity-30`,
+  "disabled-wide-btn": `${defaultStyle} w-full opacity-50`,
 };
 
 export const varients = {
