@@ -2,7 +2,7 @@ import React from "react";
 import { styles, varients } from "./styles";
 import Spinner from "../Spinner/Spinner";
 
-const CustomButton = ({ type, disabled, style, varient, text, loading, spinner, spinnerSize }) => {
+const CustomButton = ({ type, disabled, style, varient, text, loading, spinner, spinnerSize, onClick }) => {
   return (
     <button
       type={type}
@@ -14,6 +14,7 @@ const CustomButton = ({ type, disabled, style, varient, text, loading, spinner, 
             : styles[style]
           : styles["default"]
       }
+      onClick={onClick}
     >
       <div className="flex justify-center items-center flex-row gap-3">
         {text}

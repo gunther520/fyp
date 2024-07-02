@@ -1,9 +1,13 @@
-const defaultStyle = `block bg-black text-white font-semibold`;
+const defaultStyle = `bg-black text-white font-semibold`;
 
 export const styles = {
-  default: `${defaultStyle}`,
+  "default": `${defaultStyle}`,
+  "wide-70-btn": `${defaultStyle} w-1/2`,
   "wide-btn": `${defaultStyle} w-full`,
-  "disabled-wide-btn": `${defaultStyle} w-full opacity-50`,
+  "disabled-wide-btn": `${defaultStyle} w-full opacity-30`,
+  "disabled-wide-70-btn": `${defaultStyle} w-3/5 opacity-30`,
+  "only-word": `text-black bg-transparent font-semibold hover:underline w-1/3`,
+  "disabled-only-word": `text-gray-default bg-transparent font-semibold w-1/3`,
 };
 
 export const varients = {

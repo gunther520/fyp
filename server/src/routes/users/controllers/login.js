@@ -2,7 +2,7 @@ import { User } from "../../../models/index.js";
 import { checkHashPassword } from "../../../config/bcrypt.js";
 import { getToken } from "../../../config/jwt.js";
 
-const loginUser = async (req, res) => {
+const login = async (req, res) => {
   try {
     const { email, password } = req.body;
 
@@ -31,4 +31,4 @@ const loginUser = async (req, res) => {
   }
 };
 
-export default loginUser;
+export default login;

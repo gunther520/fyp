@@ -6,6 +6,7 @@ const Env = {
   MongoDB_URL: process.env.MongoDB_URL,
   JWT_SECRET: process.env.JWT_SECRET,
   JWT_EXPIRES_IN: process.env.JWT_EXPIRES_IN,
+  VERIFICATION_EXPIRES: process.env.VERIFICATION_EXPIRES,
   
 };
 

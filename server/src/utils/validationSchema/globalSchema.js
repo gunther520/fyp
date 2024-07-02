@@ -6,6 +6,7 @@ import {
   userConfirmedPasswordRule,
   adminEmailRule,
   adminPasswordRule,
+  codeVerificationRule,
 } from "./schemaRules.js";
 
 const userLoginSchema = Yup.object().shape({
@@ -24,4 +25,13 @@ const adminSchema = Yup.object().shape({
   password: adminPasswordRule,
 });
 
-export { userLoginSchema, userSignUpSchema, adminSchema };
+const codeVerificationSchema = Yup.object().shape({
+  code: codeVerificationRule
+})
+
+export {
+  userLoginSchema,
+  userSignUpSchema,
+  adminSchema,
+  codeVerificationSchema
+};

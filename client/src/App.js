@@ -6,6 +6,7 @@ import queryClient from "./config/queryClient";
 import LoginPage from "./components/LoginPage";
 import SignupPage from "./components/SignupPage";
 import HomePage from "./components/HomePage";
+import EmailVerificationPage from "./components/EmailVerificationPage";
 
 function App() {
   return (
@@ -30,6 +31,10 @@ function App() {
               element={<SignupPage />}
             />
             <Route path={`${WEB_ROUTE_PATHS.home}`} element={<HomePage />} />
+            <Route
+              path={`${WEB_ROUTE_PATHS.emailVerification}`}
+              element={<EmailVerificationPage />}
+            />
           </Routes>
         </BrowserRouter>
       </QueryClientProvider>

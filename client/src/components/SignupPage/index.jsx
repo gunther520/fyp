@@ -8,7 +8,8 @@ import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
 import { useMutation } from "react-query";
 import axios from "axios";
-import signup from "../../services/users/signup";
+// import signup from "../../services/users/signup";
+import sendEmailVerificationCode from "../../services/users/sendEmailVerificationCode";
 import {
   displaySuccessToast,
   displayErrorToast,
@@ -17,12 +18,14 @@ import {
 const SignupPage = () => {
   const navigate = useNavigate();
 
-  const { mutateAsync: signUpUser } = useMutation({
-    mutationFn: signup,
+  const { mutateAsync: sendCode } = useMutation({
+    mutationFn: sendEmailVerificationCode,
     onSuccess: (data) => {
-      console.log("Signup successful:", data);
-      displaySuccessToast("Signup Success!");
-      navigate(`${WEB_ROUTE_PATHS.login}`);
+      console.log("Email Verification", data);
+      displaySuccessToast("Verification Code is sent to your email account");
+      navigate(WEB_ROUTE_PATHS.emailVerification, {
+        state: { email: data.data.email, password: data.data.password },
+      });
     },
     onError: (err) => {
       if (axios.isAxiosError(err)) {
@@ -41,7 +44,7 @@ const SignupPage = () => {
   const handleSubmit = async (data, { setSubmitting }) => {
     setSubmitting(true);
     try {
-      await signUpUser(data);
+      await sendCode(data);
       setSubmitting(false);
     } catch (err) {
       setSubmitting(false);

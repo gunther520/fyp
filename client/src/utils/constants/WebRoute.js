@@ -1,5 +1,6 @@
 const WEB_ROUTE_PATHS = {
   login: "/",
+  emailVerification: "/signup/verify",
   signup: "/signup",
   home: "/home",
 };

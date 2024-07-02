@@ -3,7 +3,7 @@ const validateSchema = (schema) => async (req, res, next) => {
     await schema.validate(req.body, { abortEarly: false });
     next();
   } catch (err) {
-    res.status(400).json({ status: 400, message: "Data input error" });
+    res.status(400).json({ status: 400, message: "Data Input Error" });
   }
 };
 

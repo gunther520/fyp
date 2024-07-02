@@ -1,17 +1,11 @@
-import { User } from "../../../models/index.js"
+import { User, NonVerifiedUser } from "../../../models/index.js";
 import { hashPassword } from "../../../config/bcrypt.js";
 
-const signupUser = async (req, res) => {
+const signup = async (req, res) => {
   try {
     const { email, password } = req.body;
-    
-    const existingUser = await User.findOne(email ? { email: email } : null);
-    if (existingUser) {
-      return res.status(400).json({ 
-        status: 400, 
-        message: "User is already exists" 
-      });
-    }
+
+    await NonVerifiedUser.deleteOne({ email: email });
 
     const newUser = new User({
       email: email,
@@ -31,4 +25,4 @@ const signupUser = async (req, res) => {
   }
 };
 
-export default signupUser;
+export default signup;
