@@ -1,4 +1,8 @@
 import { NonVerifiedUser } from "../../../models/index.js";
+import {
+  ErrorMessages,
+  SuccessMessages,
+} from "../../../utils/constants/Message.js";
 
 const verifyCode = async (req, res) => {
   const { email, code } = req.body;
@@ -12,7 +16,7 @@ const verifyCode = async (req, res) => {
   if (!existingNonVerifiedUser) {
     return res.status(400).json({
       status: 400,
-      message: "Invalid Verification Code",
+      message: ErrorMessages.INVALID_VERIFICATION_CODE,
     });
   }
 
@@ -20,14 +24,14 @@ const verifyCode = async (req, res) => {
     await NonVerifiedUser.deleteOne({ email: email, code: verificationCode });
     return res.status(400).json({
       status: 400,
-      message: "Validation Code is Expired",
+      message: ErrorMessages.VERIFICATION_CODE_EXPIRE,
     });
   }
 
   await NonVerifiedUser.deleteOne({ email: email, code: verificationCode });
   return res.status(200).json({
     status: 200,
-    message: "Verification Success!",
+    message: SuccessMessages.VERIFICATION_SUCCESS,
   });
 };
 

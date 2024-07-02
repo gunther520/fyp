@@ -1,5 +1,6 @@
 import { User, NonVerifiedUser } from "../../../models/index.js";
 import { hashPassword } from "../../../config/bcrypt.js";
+import { ErrorMessages } from "../../../utils/constants/Message.js";
 
 const signup = async (req, res) => {
   try {
@@ -20,7 +21,7 @@ const signup = async (req, res) => {
   } catch (err) {
     res.status(500).json({
       status: 500,
-      message: "Internal Server Error",
+      message: ErrorMessages.INTERNAL_SERVER_ERROR,
     });
   }
 };

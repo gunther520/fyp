@@ -16,6 +16,7 @@ import {
   displaySuccessToast,
   displayErrorToast,
 } from "../base/Toast/CustomToast";
+import { ErrorMessages, SuccessMessages } from "../../utils/constants/Message";
 
 const EmailVerificationPage = () => {
   const navigate = useNavigate();
@@ -24,19 +25,22 @@ const EmailVerificationPage = () => {
   const { email, password } = location.state || {};
   const emailValidationInputRefs = useRef([]);
   const [allFieldsFilled, setAllFieldsFilled] = useState(false);
-  const [isReset, setIsReset] = useState(false);
+  const [isResetButtonEnabled, setIsResetButtonEnabled] = useState(false);
   const [isResending, setIsResending] = useState(false);
+  const [isResendButtonEnabled, setIsResendButtonEnabled] = useState(true);
+  const [countdown, setCountdown] = useState(0);
 
   const { mutateAsync: signupNewUser } = useMutation({
     mutationFn: signup,
     onSuccess: (data) => {
-      console.log("Signup successful:", data);
-      displaySuccessToast("Signup Success!");
+      displaySuccessToast(SuccessMessages.SIGNUP_SUCCESS);
       navigate(WEB_ROUTE_PATHS.login);
     },
     onError: (err) => {
       if (axios.isAxiosError(err)) {
-        displayErrorToast(err.response?.data?.message ?? "Unexpected Error");
+        displayErrorToast(
+          err.response?.data?.message ?? ErrorMessages.UNEXPECTED_ERROR
+        );
       }
     },
   });
@@ -48,7 +52,15 @@ const EmailVerificationPage = () => {
     },
     onError: (err) => {
       if (axios.isAxiosError(err)) {
-        displayErrorToast(err.response?.data?.message ?? "Unexpected Error");
+        displayErrorToast(
+          err.response?.data?.message ?? ErrorMessages.UNEXPECTED_ERROR
+        );
+        if (
+          err.response?.data.message === ErrorMessages.INTERNAL_SERVER_ERROR
+        ) {
+          navigate(WEB_ROUTE_PATHS.signup);
+          return;
+        }
       }
     },
   });
@@ -56,14 +68,21 @@ const EmailVerificationPage = () => {
   const { mutateAsync: resendCode } = useMutation({
     mutationFn: resendEmailVerificationCode,
     onSuccess: (data) => {
-      console.log("Resend Code Successful:", data);
-      displaySuccessToast("Verification code is sent!");
+      displaySuccessToast(SuccessMessages.SEND_VERIFICATION_CODE_SUCCESS);
     },
     onError: (err) => {
       if (axios.isAxiosError(err)) {
-        displayErrorToast(err.response?.data?.message ?? "Unexpected Error");
-        if (err.response.data.message === 'Validation Code is Expired'){
-          navigate(WEB_ROUTE_PATHS.signup)
+        displayErrorToast(
+          err.response?.data?.message ?? ErrorMessages.UNEXPECTED_ERROR
+        );
+        if (
+          err.response?.data.message === ErrorMessages.VERIFICATION_CODE_EXPIRE
+        ) {
+          navigate(WEB_ROUTE_PATHS.signup);
+          return;
+        }
+        if (err.response.data.message === ErrorMessages.INTERNAL_SERVER_ERROR) {
+          navigate(WEB_ROUTE_PATHS.signup);
           return;
         }
       }
@@ -90,25 +109,47 @@ const EmailVerificationPage = () => {
       emailValidationInputRefs.current[index + 1].focus();
     }
 
+    if (newCode[0]) {
+      setIsResetButtonEnabled(true);
+    }
+
     if (newCode.every((code) => code !== "")) {
       setAllFieldsFilled(true);
-      setIsReset(false);
     }
+  };
+
+  const startCountdown = (duration) => {
+    setCountdown(duration);
+    const interval = setInterval(() => {
+      setCountdown((prevCountdown) => {
+        if (prevCountdown <= 1) {
+          clearInterval(interval);
+          setIsResendButtonEnabled(true);
+          return 0;
+        }
+        return prevCountdown - 1;
+      });
+    }, 1000);
   };
 
   const resetInputValues = (setFieldValue) => {
     setFieldValue("code", Array(6).fill(""));
-    setIsReset(true);
+    setIsResetButtonEnabled(false);
+    emailValidationInputRefs.current[0].focus();
   };
 
   const resentVerificationCode = async (setFieldValue) => {
     resetInputValues(setFieldValue);
+    setIsResendButtonEnabled(false);
     try {
-      setIsResending(true)
+      setIsResending(true);
       await resendCode({ email, password });
-      setIsResending(false)
+      setIsResending(false);
+      startCountdown(5);
     } catch (err) {
-      setIsResending(false)
+      setIsResending(false);
+    } finally {
+      setIsResendButtonEnabled(false);
     }
   };
 
@@ -131,7 +172,7 @@ const EmailVerificationPage = () => {
               </div>
 
               <div className="flex justify-center items-center space-x-5">
-                {allFieldsFilled && (
+                {values.code[0] !== "" && (
                   <ArrowPathIcon
                     onClick={() => resetInputValues(setFieldValue)}
                     className="size-7 opacity-50 hover:opacity-100 hover:cursor-pointer"
@@ -155,27 +196,34 @@ const EmailVerificationPage = () => {
                 ))}
               </div>
 
-              {allFieldsFilled && errors.code && !isReset && (
+              {allFieldsFilled && errors.code && !isResetButtonEnabled && (
                 <div className="text-warning-red-heavy text-sm font-semibold my-1">
                   Verification code must be exactly 6 digits.
                 </div>
               )}
 
-              <div className="flex flex-row items-center">
+              <div className="flex flex-row items-center w-full md:w-3/5 ml-6 sm:ml-6 md:ml-32">
                 <CustomButton
                   type="button"
-                  style={isResending ? "disabled-only-word" : "only-word"}
+                  style={
+                    isResending || countdown > 0
+                      ? "disabled-only-word"
+                      : "only-word"
+                  }
                   text="Resend"
                   loading={isResending}
-                  disabled={isResending}
+                  disabled={!isResendButtonEnabled}
                   spinner={true}
                   spinnerSize="4"
                   onClick={() => resentVerificationCode(setFieldValue)}
+                  countdown={countdown}
                 />
                 <CustomButton
                   type="submit"
-                  disabled={isSubmitting}
-                  style={isSubmitting ? "disabled-wide-70-btn" : "wide-70-btn"}
+                  disabled={isSubmitting || isResending}
+                  style={
+                    isSubmitting ? "disabled-wide-half-btn" : "wide-half-btn"
+                  }
                   varient="sign-up-submit-btn"
                   text="Enter"
                   loading={isSubmitting}

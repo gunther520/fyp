@@ -13,27 +13,22 @@ import {
   displaySuccessToast,
   displayErrorToast,
 } from "../base/Toast/CustomToast";
+import { ErrorMessages, SuccessMessages } from "../../utils/constants/Message";
 
 const LoginPage = () => {
   const navigate = useNavigate();
-  const [isLoading, setIsLoading] = useState(false);
 
   const { mutateAsync: loginUser } = useMutation({
     mutationFn: login,
     onSuccess: (data) => {
-      console.log("Login successful:", data);
-      displaySuccessToast("Login Success!");
+      displaySuccessToast(SuccessMessages.LOGIN_SUCCESS);
       navigate(`${WEB_ROUTE_PATHS.home}`);
     },
     onError: (err) => {
       // toast
       if (axios.isAxiosError(err)) {
         displayErrorToast(
-          `${
-            err.response?.data?.message
-              ? err.response?.data?.message
-              : "Unexpected Error"
-          }`
+          err.response?.data?.message ?? ErrorMessages.UNEXPECTED_ERROR
         );
         return;
       }
@@ -42,14 +37,11 @@ const LoginPage = () => {
 
   const handleSubmit = async (data, { setSubmitting }) => {
     setSubmitting(true);
-    setIsLoading(true);
     try {
       await loginUser(data);
       setSubmitting(false);
-      setIsLoading(false);
     } catch (err) {
       setSubmitting(false);
-      setIsLoading(false);
     }
   };
 

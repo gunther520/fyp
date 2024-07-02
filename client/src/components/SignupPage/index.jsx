@@ -8,12 +8,12 @@ import CustomButton from "../base/Button/CustomButton";
 import WEB_ROUTE_PATHS from "../../utils/constants/WebRoute";
 import { useMutation } from "react-query";
 import axios from "axios";
-// import signup from "../../services/users/signup";
 import sendEmailVerificationCode from "../../services/users/sendEmailVerificationCode";
 import {
   displaySuccessToast,
   displayErrorToast,
 } from "../base/Toast/CustomToast";
+import { ErrorMessages, SuccessMessages } from "../../utils/constants/Message";
 
 const SignupPage = () => {
   const navigate = useNavigate();
@@ -21,8 +21,9 @@ const SignupPage = () => {
   const { mutateAsync: sendCode } = useMutation({
     mutationFn: sendEmailVerificationCode,
     onSuccess: (data) => {
-      console.log("Email Verification", data);
-      displaySuccessToast("Verification Code is sent to your email account");
+      displaySuccessToast(
+        `${SuccessMessages.SEND_VERIFICATION_CODE_SUCCESS} to your email`
+      );
       navigate(WEB_ROUTE_PATHS.emailVerification, {
         state: { email: data.data.email, password: data.data.password },
       });
@@ -30,11 +31,7 @@ const SignupPage = () => {
     onError: (err) => {
       if (axios.isAxiosError(err)) {
         displayErrorToast(
-          `${
-            err.response?.data?.message
-              ? err.response?.data?.message
-              : "Unexpected Error"
-          }`
+          err.response?.data?.message ?? ErrorMessages.UNEXPECTED_ERROR
         );
         return;
       }

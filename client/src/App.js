@@ -20,7 +20,7 @@ function App() {
         pauseOnFocusLoss
         draggable
         pauseOnHover={false}
-        style={{ zIndex: 99999 }}
+        style={{ zIndex: 99999, width: "360px" }}
       />
       <QueryClientProvider client={queryClient}>
         <BrowserRouter>

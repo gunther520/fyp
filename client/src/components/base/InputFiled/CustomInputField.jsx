@@ -14,38 +14,36 @@ const CustomInputField = ({ type, name, id, placeholder, style }) => {
   return (
     <div className="relative">
       <Field name={name}>
-        {
-          ({ field, meta }) => (
-            <>
-              <input
-                type={showPassword ? "text" : type}
-                id={id}
-                placeholder={placeholder}
-                className={`${styles[style] ? styles[style] : styles["default"]}`}
-                {...field}
-              />
+        {({ field, meta }) => (
+          <>
+            <input
+              type={showPassword ? "text" : type}
+              id={id}
+              placeholder={placeholder}
+              className={`${styles[style] ? styles[style] : styles["default"]}`}
+              {...field}
+            />
 
-              <div className="absolute inset-y-0 right-3 flex items-center">
-                {type === "password" && (
-                  <button
-                    onClick={togglePasswordVisibility}
-                    className="p-2 focus:outline-none"
-                    type="button"
-                  >
-                    {showPassword ? (
-                      <EyeSlashIcon className="size-5 text-black cursor-pointer" />
-                    ) : (
-                      <EyeIcon className="size-5 text-black cursor-pointer" />
-                    )}
-                  </button>
-                )}
-                {meta.error && meta.touched && (
-                  <ExclamationCircleIcon className="size-5 text-warning-red-heavy" />
-                )}
-              </div>
-            </>
-          )
-        }
+            <div className="absolute inset-y-0 right-3 flex items-center">
+              {type === "password" && (
+                <button
+                  onClick={togglePasswordVisibility}
+                  className="p-2 focus:outline-none"
+                  type="button"
+                >
+                  {showPassword ? (
+                    <EyeIcon className="size-5 text-black cursor-pointer" />
+                  ) : (
+                    <EyeSlashIcon className="size-5 text-black cursor-pointer" />
+                  )}
+                </button>
+              )}
+              {meta.error && meta.touched && (
+                <ExclamationCircleIcon className="size-5 text-warning-red-heavy" />
+              )}
+            </div>
+          </>
+        )}
       </Field>
     </div>
   );

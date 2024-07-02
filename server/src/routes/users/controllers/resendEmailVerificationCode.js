@@ -1,6 +1,13 @@
 import { User, NonVerifiedUser } from "../../../models/index.js";
 import { transporter, mailOptions } from "../../../config/nodemailer.js";
-import Env from "../../../utils/constants/Env.js";
+import {
+  ErrorMessages,
+  SuccessMessages,
+} from "../../../utils/constants/Message.js";
+
+const generateVerificationCode = () => {
+  return Math.floor(100000 + Math.random() * 900000).toString();
+};
 
 const resendEmailVerificationCode = async (req, res) => {
   try {
@@ -10,21 +17,18 @@ const resendEmailVerificationCode = async (req, res) => {
     if (existingUser) {
       return res.status(400).json({
         status: 400,
-        message: "User already exists",
+        message: ErrorMessages.USER_ALREADY_EXIST,
       });
     }
 
     await NonVerifiedUser.deleteOne({ email: email });
 
     // Generate a 6-digit verification code
-    const verificationCode = Math.floor(
-      100000 + Math.random() * 900000
-    ).toString();
+    const verificationCode = generateVerificationCode();
 
     const nonVerifiedUser = new NonVerifiedUser({
       email: email,
       code: verificationCode,
-      expiresAt: new Date(Date.now() + Env.VERIFICATION_EXPIRES * 60 * 1000),
     });
     await nonVerifiedUser.save();
 
@@ -32,19 +36,22 @@ const resendEmailVerificationCode = async (req, res) => {
       if (err) {
         return res
           .status(500)
-          .json({ status: 500, message: "Unexpected Error" });
+          .json({
+            status: 500,
+            message: ErrorMessages.SEND_VERIFICATION_CODE_FAILURE,
+          });
       }
       console.log(`Your verification code is: ${verificationCode}`);
       res.status(200).json({
         status: 200,
         data: { email: email, password: password },
-        message: "Verification code is sent",
+        message: SuccessMessages.SEND_VERIFICATION_CODE_SUCCESS,
       });
     });
   } catch (err) {
     res.status(500).json({
       status: 500,
-      message: "Internal Server Error",
+      message: ErrorMessages.INTERNAL_SERVER_ERROR,
     });
   }
 };
