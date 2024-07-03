@@ -13,3 +13,4 @@ Changes:
 1. Setup the backend server for new user sign up (MongoDB)
 2. LoginPage + SignupPage UI
 3. Input Validation
+4. Send verification code to email account
