@@ -196,13 +196,15 @@ const EmailVerificationPage = () => {
                 ))}
               </div>
 
-              {allFieldsFilled && errors.code && !isResetButtonEnabled && (
-                <div className="text-warning-red-heavy text-sm font-semibold my-1">
-                  Verification code must be exactly 6 digits.
-                </div>
-              )}
+              <div className="flex justify-center items-center space-x-5">
+                {allFieldsFilled && errors.code && !isResetButtonEnabled && (
+                  <div className="text-warning-red-heavy text-sm font-semibold my-1 ml-">
+                    Verification code must be exactly 6 digits.
+                  </div>
+                )}
+              </div>
 
-              <div className="flex flex-row items-center w-full md:w-3/5 ml-6 sm:ml-6 md:ml-32">
+              <div className="flex flex-row justify-center items-center w-full md:w-3/5 ml-6 sm:ml-6 md:ml-36">
                 <CustomButton
                   type="button"
                   style={

@@ -5,5 +5,5 @@ export const styles = {
   "default": `${defaultStyle} bg-white`,
   "no-error": `${defaultStyle} bg-white border-2 border-black focus:border focus:ring-4 focus:ring-blue-light ring-offset`,
   "error": `${defaultStyle} border border-black ring-2 focus:ring-4 ring-warning-red-heavy ring-offset bg-warning-red-light`,
-  "verification-code-input": "outline-none w-9 h-9 text-center text-lg font-bold rounded border-2 border-black focus:border-blue-light",
+  "verification-code-input": "outline-none w-7 h-7 md:w-9 md:h-9 text-center text-lg font-bold rounded border-2 border-black focus:border-blue-light",
 };
