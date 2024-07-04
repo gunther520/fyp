@@ -1,6 +1,6 @@
 To clone this project
 -------------------------
-### git clone <repo_URL>
+### git clone <https://github.com/Johnson1799/fyp.git>
 
 
 To push the local project to Github 
